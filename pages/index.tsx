@@ -31,7 +31,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
       <section className={styles.latestEpisodes}>
         <h2>Últimos lançamentos</h2>
         <ul>
-          {latestEpisodes.map((episode) => (
+          {latestEpisodes?.map((episode) => (
             <li key={episode.id}>
               <Image
                 src={episode.thumbnail}
@@ -53,7 +53,47 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
           ))}
         </ul>
       </section>
-      <section className={styles.allEpisodes}></section>
+      <section className={styles.allEpisodes}>
+        <h2>Todos os episódios</h2>
+        <table cellSpacing={0}>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Podcast</th>
+              <th>Integrantes</th>
+              <th>Data</th>
+              <th>Duração</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {allEpisodes?.map((episode) => (
+              <tr key={episode.id}>
+                <td style={{ width: 72 }}>
+                  <Image
+                    src={episode.thumbnail}
+                    alt={episode.title}
+                    width={120}
+                    height={120}
+                    objectFit="cover"
+                  />
+                </td>
+                <td>
+                  <a href="">{episode.title}</a>
+                </td>
+                <td>{episode.members}</td>
+                <td style={{ width: 100 }}>{episode.publishedAt}</td>
+                <td>{episode.durationAsString}</td>
+                <td>
+                  <button type="button">
+                    <img src="/play-green.svg" alt="Play" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </div>
   );
 }
