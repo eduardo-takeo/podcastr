@@ -45,10 +45,10 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                 <p>{episode.members}</p>
                 <span>{episode.publishedAt}</span>
                 <span>{episode.durationAsString}</span>
-                <button type="button">
-                  <img src="/play-green.svg" alt="Play" />
-                </button>
               </div>
+              <button type="button">
+                <img src="/play-green.svg" alt="Play" />
+              </button>
             </li>
           ))}
         </ul>
