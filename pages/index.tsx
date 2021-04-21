@@ -1,7 +1,8 @@
+import { GetStaticProps } from "next";
+import Image from "next/image";
 import { parseISO } from "date-fns";
 import format from "date-fns/format";
 import ptBR from "date-fns/locale/pt-BR";
-import { GetStaticProps } from "next";
 import { api } from "../services/api";
 import { convertDurationToTimeString } from "../utils/convertDurationToTimeString";
 
@@ -20,14 +21,39 @@ type Episode = {
 };
 
 type HomeProps = {
-  episodes: Episode[];
+  latestEpisodes: Episode[];
+  allEpisodes: Episode[];
 };
 
-export default function Home(props: HomeProps) {
-  console.log(props.episodes);
+export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
   return (
     <div className={styles.homePage}>
-      <h1>Index</h1>
+      <section className={styles.latestEpisodes}>
+        <h2>Últimos lançamentos</h2>
+        <ul>
+          {latestEpisodes.map((episode) => (
+            <li key={episode.id}>
+              <Image
+                src={episode.thumbnail}
+                alt={episode.title}
+                width={192}
+                height={192}
+                objectFit="cover"
+              />
+              <div className={styles.episodeDetails}>
+                <a href="">{episode.title}</a>
+                <p>{episode.members}</p>
+                <span>{episode.publishedAt}</span>
+                <span>{episode.durationAsString}</span>
+                <button type="button">
+                  <img src="/play-green.svg" alt="Play" />
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className={styles.allEpisodes}></section>
     </div>
   );
 }
@@ -57,9 +83,13 @@ export const getStaticProps: GetStaticProps = async () => {
     url: episode.file.url,
   }));
 
+  const latestEpisodes = episodes.slice(0, 2);
+  const allEpisodes = episodes.slice(2, episodes.length);
+
   return {
     props: {
-      episodes,
+      latestEpisodes,
+      allEpisodes,
     },
     revalidate: 60 * 60 * 8, //60 segundos x 60 minutos x 8 horas
   };
