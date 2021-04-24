@@ -59,7 +59,12 @@ export function PlayerContextProvider({
   function playNext() {
     const nextEpisodeIndex = currentEpisodeIndex + 1;
 
-    if (nextEpisodeIndex < episodesList.length) {
+    if (isShuffling) {
+      const nextRandomEpisodeIndex = Math.floor(
+        Math.random() * episodesList.length
+      );
+      setCurrentEpisodeIndex(nextRandomEpisodeIndex);
+    } else if (nextEpisodeIndex < episodesList.length) {
       setCurrentEpisodeIndex(nextEpisodeIndex);
     }
   }
