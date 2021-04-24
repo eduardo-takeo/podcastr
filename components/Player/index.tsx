@@ -11,7 +11,11 @@ export const Player = () => {
     currentEpisodeIndex,
     isPlaying,
     togglePlay,
+    playNext,
+    playPrevious,
     setPlayingState,
+    hasPrevious,
+    hasNext,
   } = useContext(PlayerContext);
   const episode = episodesList[currentEpisodeIndex];
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -79,7 +83,11 @@ export const Player = () => {
           <button type="button" disabled={!episode}>
             <img src="/shuffle.svg" alt="Shuffle" />
           </button>
-          <button type="button" disabled={!episode}>
+          <button
+            type="button"
+            disabled={!episode || !hasPrevious}
+            onClick={playPrevious}
+          >
             <img src="/play-previous.svg" alt="Previous" />
           </button>
           <button
@@ -94,7 +102,11 @@ export const Player = () => {
               <img src="/play.svg" alt="Play" />
             )}
           </button>
-          <button type="button" disabled={!episode}>
+          <button
+            type="button"
+            disabled={!episode || !hasNext}
+            onClick={playNext}
+          >
             <img src="/play-next.svg" alt="Next" />
           </button>
           <button type="button" disabled={!episode}>
