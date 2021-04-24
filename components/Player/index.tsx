@@ -9,7 +9,11 @@ export const Player = () => {
   const {
     episodesList,
     currentEpisodeIndex,
+    isShuffling,
+    isLooping,
     isPlaying,
+    toggleShuffle,
+    toggleLoop,
     togglePlay,
     playNext,
     playPrevious,
@@ -19,6 +23,8 @@ export const Player = () => {
   } = usePlayer();
   const episode = episodesList[currentEpisodeIndex];
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  console.log(`episodesList`, episodesList);
 
   useEffect(() => {
     if (!audioRef.current) {
@@ -73,6 +79,7 @@ export const Player = () => {
           <audio
             src={episode.url}
             autoPlay
+            loop={isLooping}
             ref={audioRef}
             onPlay={() => setPlayingState(true)}
             onPause={() => setPlayingState(false)}
@@ -80,7 +87,12 @@ export const Player = () => {
         )}
 
         <div className={styles.buttons}>
-          <button type="button" disabled={!episode}>
+          <button
+            type="button"
+            disabled={!episode || episodesList.length === 1}
+            onClick={toggleShuffle}
+            className={isShuffling ? styles.isActive : ""}
+          >
             <img src="/shuffle.svg" alt="Shuffle" />
           </button>
           <button
@@ -109,7 +121,12 @@ export const Player = () => {
           >
             <img src="/play-next.svg" alt="Next" />
           </button>
-          <button type="button" disabled={!episode}>
+          <button
+            type="button"
+            disabled={!episode}
+            onClick={toggleLoop}
+            className={isLooping ? styles.isActive : ""}
+          >
             <img src="/repeat.svg" alt="Repeat" />
           </button>
         </div>
